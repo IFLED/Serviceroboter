@@ -1,0 +1,25 @@
+<package>
+  <name>hsmakata</name>
+  <version>0.0.0</version>
+  <description>
+    This stack contains all descriptions, drivers and bringup facilities for 
+    hsmataka.
+  </description>
+
+  <maintainer email="engin@todo.todo">engin</maintainer>
+  <license>TODO</license>
+
+  <run_depend>hsmakata_bringup</run_depend>
+  <run_depend>hsmakata_description</run_depend>
+  <run_depend>hsmakata_dynamixel_conmmander</run_depend>
+  <run_depend>hsmakata_joint_commander</run_depend>
+  <run_depend>hsmakata_katana_test</run_depend>
+  <run_depend>hsmakata_moveit_config</run_depend>
+  <run_depend>hsmakata_pick_n_place</run_depend>
+  <run_depend>hsmakata_moveit_ikfast_manipulator_plugin</run_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <export>
+    <metapackage/>
+  </export>
+</package>

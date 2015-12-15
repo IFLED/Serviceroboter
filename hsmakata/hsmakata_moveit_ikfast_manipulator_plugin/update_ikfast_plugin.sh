@@ -1,0 +1,1 @@
+rosrun moveit_ikfast create_ikfast_moveit_plugin.py hsmakata manipulator hsmakata_moveit_ikfast_manipulator_plugin /home/pioneer/ros/catkin_ws/src/hsmakata_moveit_ikfast_manipulator_plugin/src/hsmakata_manipulator_ikfast_solver.cpp
