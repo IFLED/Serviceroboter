@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="cylRecognition" pkg="cylRecognition" type="cylRecognition" output="screen" launch-prefix="xterm -e"></node>
+  <node name="showObjects" pkg="showObjects" type="showObjects"></node>
+  <node name="cloudGrabber" pkg="cloudGrabber" type="cloudGrabber"></node>
+  <node name="hsmakata_pick_n_place" pkg="hsmakata_pick_n_place" type="hsmakata_pick_n_place" output="screen" launch-prefix="xterm -e"></node>
+ 
+
+</launch>
+

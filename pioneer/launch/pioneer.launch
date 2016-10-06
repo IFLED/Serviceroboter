@@ -1,0 +1,4 @@
+<launch>
+   <node name="pioneer_joy_controller" pkg="joy" type="joy_node">
+   </node>
+</launch>

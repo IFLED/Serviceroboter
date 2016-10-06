@@ -4,6 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="hsmakata" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- transmissions are required by the controller manager (here: for simulation in gazebo) -->
   <transmission name="katana_motor1_pan_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="katana_motor1_pan_joint">
@@ -78,8 +79,19 @@
   <!-- ** base_link to base_frame * -->
   <!-- **************************** -->
   <!--xacro:include filename="$(find p2os_urdf)/defs/pioneer3dx.urdf.xacro" /-->
+  <!--<include filename="$(find p2os_urdf)/defs/materials.xacro"/>-->
+  <!-- Properties (Constants) -->
+  <!-- Right/Left Hubcap + Wheel -->
+  <!-- Chassis description -->
   <link name="base_link">
-    <visual name="base_visual">
+    <!-- CHECK THESE VALUES. THEY MAY BE COMPLETELY WRONG. -->
+    <inertial>
+      <mass value="40.0"/>
+      <origin xyz="-0.045 0 0.148"/>
+      <inertia ixx="0.3338" ixy="0.0" ixz="0.0" iyy="0.4783" iyz="0.0" izz="0.3338"/>
+    </inertial>
+    <!-- The base visual is fine. Just the inertial is questionable.-->
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="-0.045 0 0.148"/>
       <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/chassis.stl"/>
@@ -88,24 +100,25 @@
         <color rgba="0.851 0.0 0.0 1.0"/>
       </material>
     </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.045 0 0.148"/>
+      <geometry>
+        <mesh filename="package://p2os_urdf/meshes/p3at_meshes/chassis.stl"/>
+      </geometry>
+    </collision>
   </link>
   <gazebo reference="base_link">
     <material value="Gazebo/Red"/>
   </gazebo>
-  <joint name="base_top_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="-0.045 0 0.234"/>
-    <parent link="base_link"/>
-    <child link="top_plate"/>
-  </joint>
   <link name="top_plate">
-    <visual>
-      <inertial>
-        <mass value="0.01"/>
-        <origin xyz="0 0 0"/>
-        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
-      </inertial>
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
+    </inertial>
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry name="top_geom">
+      <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/top.stl"/>
       </geometry>
       <material name="TopBlack">
@@ -116,6 +129,12 @@
   <gazebo reference="top_plate">
     <material value="Gazebo/Black"/>
   </gazebo>
+  <joint name="base_top_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.045 0 0.24"/>
+    <parent link="base_link"/>
+    <child link="top_plate"/>
+  </joint>
+  <!-- Swivel -->
   <joint name="base_swivel_joint" type="continuous">
     <origin rpy="0 0 0" xyz="-0.185 0 0.055"/>
     <anchor xyz="0 0 0"/>
@@ -130,7 +149,7 @@
       <origin xyz="0 0 0"/>
       <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
     </inertial>
-    <visual name="base_visual">
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/swivel.stl"/>
@@ -149,13 +168,14 @@
   <gazebo reference="swivel">
     <material value="Gazebo/Grey"/>
   </gazebo>
+  <!-- Center Wheel + Hubcap -->
   <link name="center_hubcap">
     <inertial>
       <mass value="0.01"/>
       <origin xyz="0 0 0"/>
       <inertia ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983" iyy="0.015218160428" iyz="-0.000004273467" izz="0.011763977943"/>
     </inertial>
-    <visual name="base_visual">
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/center_hubcap.stl"/>
@@ -167,7 +187,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0 0 0"/>
+        <box size="0.05 0.05 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -189,7 +209,7 @@
       <origin xyz="0 0 0"/>
       <inertia ixx="0.012411765597" ixy="-0.000711733678" ixz="0.00050272983" iyy="0.015218160428" iyz="-0.000004273467" izz="0.011763977943"/>
     </inertial>
-    <visual name="base_visual">
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/center_wheel.stl"/>
@@ -224,6 +244,13 @@
         <color rgba="1.0 0.811 0.151 1.0"/>
       </material>
     </visual>
+    <collision>
+      <origin rpy="-1.57079635 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--<mesh filename="package://p2os_urdf/meshes/p3dx_meshes/center_wheel.stl"/>-->
+        <cylinder length="0.01" radius="0.09"/>
+      </geometry>
+    </collision>
   </link>
   <joint name="left_hub_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0 0.15 0.08"/>
@@ -260,6 +287,13 @@
         <color rgba="1.0 0.811 0.151 1.0"/>
       </material>
     </visual>
+    <collision>
+      <origin rpy="-1.57079635 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!--<mesh filename="package://p2os_urdf/meshes/p3dx_meshes/center_wheel.stl"/>-->
+        <cylinder length="0.01" radius="0.09"/>
+      </geometry>
+    </collision>
   </link>
   <gazebo reference="right_hub">
     <material value="Gazebo/Yellow"/>
@@ -289,13 +323,14 @@
   <gazebo reference="right_wheel_joint">
     <material value="Gazebo/Black"/>
   </gazebo>
+  <!-- Front + Back Sonar -->
   <link name="front_sonar">
     <inertial>
       <mass value="0.0001"/>
       <origin xyz="0 0 0"/>
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
     </inertial>
-    <visual name="base_visual">
+    <visual name="pioneer_geom">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry name="pioneer_geom">
         <mesh filename="package://p2os_urdf/meshes/p3dx_meshes/front_sonar.stl"/>
@@ -337,7 +372,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0 0 0"/>
+        <box size=" 0.5 0.25 0.05"/>
       </geometry>
     </collision>
   </link>
@@ -346,9 +381,13 @@
   </gazebo>
   <joint name="base_back_joint" type="fixed">
     <origin rpy="0 0 0" xyz="0.109 0 0.209"/>
+    <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
     <parent link="base_link"/>
     <child link="back_sonar"/>
   </joint>
+  <!-- <xacro:right_wheel_joint suffix="" reflect="1"/>
+	<xacro:left_wheel_joint suffix="" reflect="-1"/>
+	<xacro:p3dx_gazebo_ext/> -->
   <link name="base_frame">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -404,11 +443,12 @@
   <joint name="kata_plate_joint" type="fixed">
     <parent link="top_plate"/>
     <child link="kata_plate_link"/>
-    <origin rpy="0 0 0" xyz="0.022 0 0.191"/>
+    <origin rpy="0 0 0" xyz="-0.020 0 0.191"/>
   </joint>
   <!-- **************************** -->
   <!-- *** kata_plate_link to Katana Arm *** -->
   <!-- **************************** -->
+  <!-- transmissions are required by the controller manager (here: for simulation in gazebo) -->
   <transmission name="katana_motor1_pan_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="katana_motor1_pan_joint">
@@ -504,6 +544,9 @@
       <palm_link>katana_gripper_link</palm_link>
     </gripper>
   </gazebo>
+  <!-- NOTE: all gazebo extensions are listed here: simulator_gazebo/gazebo/src/urdf2gazebo.cpp -->
+  <!-- all materials are listed here: simulator_gazebo/gazebo/gazebo/share/gazebo/Media/materials/ -->
+  <!-- *************** links *************** -->
   <gazebo reference="katana_base_link">
     <material value="Gazebo/Grey"/>
   </gazebo>
@@ -531,35 +574,56 @@
     <material value="Gazebo/Grey"/>
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
+  <!-- TODO: set friction parameters (mu1, mu2, kp, kd) for fingers (see PR2 gripper.gazebo.xacro) -->
   <gazebo reference="katana_r_finger_link">
     <material value="Gazebo/Grey"/>
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
+  <!-- TODO: set friction parameters (mu1, mu2, kp, kd) for fingers (see PR2 gripper.gazebo.xacro) -->
   <gazebo reference="katana_l_finger_link">
     <material value="Gazebo/Grey"/>
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
+  <!-- *************** joints ************** -->
+  <!-- note: initial_joint_position isn't supported by Gazebo yet
+
   <gazebo reference="katana_motor1_pan_joint">
     <initial_joint_position>-3.022</initial_joint_position>
   </gazebo>
+
   <gazebo reference="katana_motor2_lift_joint">
     <initial_joint_position>2.163</initial_joint_position>
   </gazebo>
+
   <gazebo reference="katana_motor3_lift_joint">
     <initial_joint_position>-2.207</initial_joint_position>
   </gazebo>
+
   <gazebo reference="katana_motor4_lift_joint">
     <initial_joint_position>-2.026</initial_joint_position>
   </gazebo>
+
   <gazebo reference="katana_motor5_wrist_roll_joint">
     <initial_joint_position>-2.990</initial_joint_position>
   </gazebo>
-  <gazebo reference="katana_r_finger_joint">
-    <initial_joint_position>0.3</initial_joint_position>
-  </gazebo>
-  <gazebo reference="katana_l_finger_joint">
-    <initial_joint_position>0.3</initial_joint_position>
-  </gazebo>
+
+  <xacro:macro name="gazebo_finger_joint" params="prefix">
+    <gazebo reference="katana_${prefix}_finger_joint">
+      <initial_joint_position>0.3</initial_joint_position>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:gazebo_finger_joint prefix="r"/>
+  <xacro:gazebo_finger_joint prefix="l"/>
+  -->
+  <!-- all values from the katana manual -->
+  <!-- All inertial values (mass, center of mass and inertia tensor) have been
+       calculated from the meshes using MeshLab -->
+  <!-- lower + upper joint limits have been calculated using the KNI's GetEncoderMinPos(), GetEncoderMaxPos();
+       the velocity limit has been calculated by vel_enc2rad(180); 180 encoders / 10ms is the maximum
+       speed limit for all joints, according to the Katana 4D documentation -->
+  <!-- the effort limits have been measured experimentally from the maximum effort the Gazebo controller 
+       uses in normal conditions -->
   <link name="katana_base_link">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -828,6 +892,7 @@
          used in IK etc., relative to the base frame); there is no actual
          arm part attached to this link -->
   </link>
+  <!-- **************************************************************** -->
   <joint name="katana_base_frame_joint" type="fixed">
     <parent link="katana_base_link"/>
     <child link="katana_base_frame"/>

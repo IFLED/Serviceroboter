@@ -69,7 +69,7 @@ xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controlle
   <joint name="kata_plate_joint" type="fixed">
     <parent link="top_plate" />
     <child link="kata_plate_link" />
-    <origin rpy="0 0 0" xyz="0.022 0 0.191" />
+    <origin rpy="0 0 0" xyz="-0.020 0 0.191" />
   </joint>
 
 

@@ -1,15 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(cloudGrabber)
+project(pioneer)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  pcl_conversions
-  pcl_ros
-  roscpp
-  sensor_msgs
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -68,7 +63,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   sensor_msgs
+#   std_msgs  # Or other packages containing msgs
 # )
 
 ###################################
@@ -82,8 +77,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES cloudGrabber
-#  CATKIN_DEPENDS pcl_conversions pcl_ros roscpp sensor_msgs
+#  LIBRARIES pioneer
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -94,28 +89,21 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
-
-#//----------------cloudGrabber--------------------//
-add_executable(cloudGrabber src/main.cpp)
-target_link_libraries(cloudGrabber ${catkin_LIBRARIES})
 
 ## Declare a cpp library
-# add_library(cloudGrabber
-#   src/${PROJECT_NAME}/cloudGrabber.cpp
+# add_library(pioneer
+#   src/${PROJECT_NAME}/pioneer.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(cloudGrabber_node src/cloudGrabber_node.cpp)
+# add_executable(pioneer_node src/pioneer_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(cloudGrabber_node cloudGrabber_generate_messages_cpp)
+# add_dependencies(pioneer_node pioneer_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(cloudGrabber_node
+# target_link_libraries(pioneer_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -134,7 +122,7 @@ target_link_libraries(cloudGrabber ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS cloudGrabber cloudGrabber_node
+# install(TARGETS pioneer pioneer_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -159,7 +147,7 @@ target_link_libraries(cloudGrabber ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_cloudGrabber.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_pioneer.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

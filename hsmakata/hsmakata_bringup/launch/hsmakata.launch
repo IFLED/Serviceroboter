@@ -20,5 +20,8 @@
   <!-- calvin joint commander -->
   <include file="$(find hsmakata_bringup)/launch/commanders.launch"/>
 
+  <!-- speech output -->
+  <node name="soundplay_node" pkg="sound_play" type="soundplay_node.py"/>
+
 </launch>
 

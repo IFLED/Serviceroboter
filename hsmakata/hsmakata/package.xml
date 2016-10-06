@@ -2,8 +2,7 @@
   <name>hsmakata</name>
   <version>0.0.0</version>
   <description>
-    This stack contains all descriptions, drivers and bringup facilities for 
-    hsmataka.
+    This stack contains all descriptions, drivers and bringup facilities for hsmataka.
   </description>
 
   <maintainer email="engin@todo.todo">engin</maintainer>
